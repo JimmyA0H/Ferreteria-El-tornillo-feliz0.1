@@ -1,0 +1,50 @@
+
+@model Ferreteria.Web.Models.HerramientaViewModel
+@{
+    ViewData["Title"] = "Registrar herramienta";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card card-ferreteria">
+            <div class="card-body">
+                <h4 class="card-title mb-3">Nueva herramienta</h4>
+
+                <form asp-action="Crear" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label"></label>
+                        <input asp-for="Nombre" class="form-control" />
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Descripcion" class="form-label"></label>
+                        <textarea asp-for="Descripcion" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CategoriaId" class="form-label"></label>
+                        <input asp-for="CategoriaId" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Stock" class="form-label"></label>
+                        <input asp-for="Stock" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="PrecioCompra" class="form-label"></label>
+                        <input asp-for="PrecioCompra" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="PrecioVenta" class="form-label"></label>
+                        <input asp-for="PrecioVenta" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2">Volver</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

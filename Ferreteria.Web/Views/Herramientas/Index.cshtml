@@ -1,0 +1,64 @@
+
+@model IEnumerable<Ferreteria.Web.Models.HerramientaViewModel>
+@{
+    ViewData["Title"] = "Inventario de Herramientas";
+}
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="hero p-4 mb-3">
+            <div class="hero-content">
+                <h1 class="display-6 fw-bold">Controla el inventario de tu ferretería</h1>
+                <p class="lead mb-0">Entradas, salidas, precios y proveedores en un solo lugar.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 d-flex align-items-stretch">
+        <div class="card card-ferreteria w-100">
+            <div class="card-body">
+                <h5 class="card-title">Accesos rápidos</h5>
+                <a class="btn btn-primary w-100 mb-2" asp-action="Crear">➕ Registrar herramienta</a>
+                <form method="get" asp-action="Index" class="d-flex">
+                    <input type="text" name="q" class="form-control me-2" placeholder="Buscar herramienta..." />
+                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+                </form>
+                <p class="small text-muted mt-2 mb-0">
+                    Este módulo consume la API REST <code>/api/herramientas</code> para mostrar la información.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-ferreteria">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Listado de herramientas</h5>
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Stock</th>
+                    <th>Precio venta</th>
+                    <th>Categoría Id</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var h in Model)
+            {
+                <tr>
+                    <td>@h.Nombre</td>
+                    <td>@h.Stock</td>
+                    <td>@h.PrecioVenta.ToString("C")</td>
+                    <td>@h.CategoriaId</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info mt-3">
+                No hay herramientas registradas todavía. ¡Agrega la primera!
+            </div>
+        }
+    </div>
+</div>
