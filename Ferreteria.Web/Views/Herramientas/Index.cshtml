@@ -1,4 +1,3 @@
-
 @model IEnumerable<Ferreteria.Web.Models.HerramientaViewModel>
 @{
     ViewData["Title"] = "Inventario de Herramientas";
@@ -22,9 +21,6 @@
                     <input type="text" name="q" class="form-control me-2" placeholder="Buscar herramienta..." />
                     <button class="btn btn-outline-secondary" type="submit">Buscar</button>
                 </form>
-                <p class="small text-muted mt-2 mb-0">
-                    Este módulo consume la API REST <code>/api/herramientas</code> para mostrar la información.
-                </p>
             </div>
         </div>
     </div>
@@ -40,24 +36,33 @@
                     <th>Stock</th>
                     <th>Precio venta</th>
                     <th>Categoría Id</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-            @foreach (var h in Model)
-            {
-                <tr>
-                    <td>@h.Nombre</td>
-                    <td>@h.Stock</td>
-                    <td>@h.PrecioVenta.ToString("C")</td>
-                    <td>@h.CategoriaId</td>
-                </tr>
-            }
+                @foreach (var h in Model)
+                {
+                    <tr>
+                        <td>@h.Nombre</td>
+                        <td>@h.Stock</td>
+                        <td>@h.PrecioVenta.ToString("C")</td>
+                        <td>@h.CategoriaId</td>
+                        <td>
+                            <a asp-action="Editar" asp-route-id="@h.Id" class="btn btn-warning btn-sm">Editar</a>
+                            <a asp-action="Eliminar" asp-route-id="@h.Id" class="btn btn-danger btn-sm"
+                               onclick="return confirm('¿Seguro que deseas eliminar esta herramienta?');">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
+
         @if (!Model.Any())
         {
             <div class="alert alert-info mt-3">
-                No hay herramientas registradas todavía. ¡Agrega la primera!
+                No hay herramientas registradas todavía.
             </div>
         }
     </div>

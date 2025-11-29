@@ -1,4 +1,3 @@
-
 using System.Net.Http.Json;
 using Ferreteria.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -44,11 +43,57 @@ public class HerramientasController : Controller
 
         var client = _httpClientFactory.CreateClient("FerreteriaApi");
         var resp = await client.PostAsJsonAsync("api/herramientas", modelo);
+
         if (!resp.IsSuccessStatusCode)
         {
-            ModelState.AddModelError(string.Empty, "Error al guardar la herramienta.");
+            var error = await resp.Content.ReadAsStringAsync();
+            ModelState.AddModelError(string.Empty, "ERROR API: " + error);
             return View(modelo);
         }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // ? EDITAR (GET)
+    public async Task<IActionResult> Editar(int id)
+    {
+        var client = _httpClientFactory.CreateClient("FerreteriaApi");
+        var herramienta = await client.GetFromJsonAsync<HerramientaViewModel>($"api/herramientas/{id}");
+
+        if (herramienta == null)
+            return NotFound();
+
+        return View(herramienta);
+    }
+
+    // ? EDITAR (POST)
+    [HttpPost]
+    public async Task<IActionResult> Editar(int id, HerramientaViewModel modelo)
+    {
+        if (!ModelState.IsValid)
+            return View(modelo);
+
+        var client = _httpClientFactory.CreateClient("FerreteriaApi");
+        var resp = await client.PutAsJsonAsync($"api/herramientas/{id}", modelo);
+
+        if (!resp.IsSuccessStatusCode)
+        {
+            var error = await resp.Content.ReadAsStringAsync();
+            ModelState.AddModelError(string.Empty, "ERROR API: " + error);
+            return View(modelo);
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    // ? ELIMINAR
+    public async Task<IActionResult> Eliminar(int id)
+    {
+        var client = _httpClientFactory.CreateClient("FerreteriaApi");
+        var resp = await client.DeleteAsync($"api/herramientas/{id}");
+
+        if (!resp.IsSuccessStatusCode)
+            return BadRequest("No se pudo eliminar.");
 
         return RedirectToAction(nameof(Index));
     }
